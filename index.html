@@ -22,9 +22,9 @@
         <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
             
             <!-- Search form -->
-            <form class="example" action="action_page.php">
+            <form id="search-form">
                 <label>Search for a city:</label>
-                <input type="text" placeholder="City" name="search">
+                <input type="text" placeholder="City" id="search">
                 <button type="submit" id="search-button"><i class="fa fa-search"></i></button>
             </form>
 
@@ -37,7 +37,7 @@
                 <div>Temperature: <span id="temperature"></span></div>
                 <div>Humidity: <span id="humidity"></span></div>
                 <div>Wind Speed: <span id="wind-speed"></span></div>
-                <div>UV Index: <span id="uv"></span></div>
+                <div>UV Index: <label id="uv"></label></div>
             </div>
             <div class="container" id="future-forecast"></div>
         </main>

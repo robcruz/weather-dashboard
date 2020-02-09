@@ -2,8 +2,7 @@
 const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
 let city = "London"
 
-
-
+let searchInput = $("#search")
 let searchButton = $("#search-button")
 let citySpan = $("#city")
 let tempSpan = $("#temperature")
@@ -27,10 +26,16 @@ function renderCurrentForecast(city){
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
       method: "GET"
     }).then(function (response) {
-      if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
+      if (Math.floor(response.value) >= 1 && Math.floor(response.value) <= 2) {
+        uvSpan.css("background-color", "lightgreen")
+      } else if (Math.floor(response.value) >= 3 && Math.floor(response.value) <= 5) {
+        uvSpan.css("background-color", "yellow")
+      } else if (Math.floor(response.value) >= 6 && Math.floor(response.value) <= 7) {
+        uvSpan.css("background-color", "orange")
+      } else if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
         uvSpan.css("background-color", "lightred")
       } else {
-        uvSpan.css("background-color", "lightgreen")
+        uvSpan.css("background-color", "purple")
       }
       uvSpan.text(`${response.value}`)
       console.log(response)
@@ -46,7 +51,7 @@ function renderCurrentForecast(city){
 
 function renderEventCurrentForecast(event){
   event.preventDefault()
-  renderCurrentForecast(city)
+  renderCurrentForecast(searchInput.val())
 }
 
 

@@ -34,6 +34,7 @@ function renderCurrentForecast(city){
         uvSpan.css("color", "black")
       } else if (Math.floor(response.value) >= 6 && Math.floor(response.value) <= 7) {
         uvSpan.css("background-color", "orange")
+        uvSpan.css("color", "black")
       } else if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
         uvSpan.css("background-color", "red")
         uvSpan.css("color", "white")
@@ -55,7 +56,10 @@ function renderCurrentForecast(city){
 
 function renderEventCurrentForecast(event){
   event.preventDefault()
-  renderCurrentForecast(searchInput.val())
+  let city = searchInput.val()
+  if (city) {
+    renderCurrentForecast(city)
+  }
 }
 
 

@@ -1,4 +1,21 @@
 //Global Variables
+const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
+let city = "London"
+
+function doIt(event){
+  event.preventDefault()
+
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_TOKEN}`,
+    method: "GET"
+  }).then(function (response) {
+    console.log(response)
+  })
+}
+
+
+$("#search-button").on("click", doIt);
+
 /* 
 Put all variables that will be usedthroughout the js file Here.
 If Variables are used only in one function, declare them within that function's scope.

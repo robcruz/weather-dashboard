@@ -27,15 +27,19 @@ function renderCurrentForecast(city){
       method: "GET"
     }).then(function (response) {
       if (Math.floor(response.value) >= 1 && Math.floor(response.value) <= 2) {
-        uvSpan.css("background-color", "lightgreen")
+        uvSpan.css("background-color", "green")
+        uvSpan.css("color", "white")
       } else if (Math.floor(response.value) >= 3 && Math.floor(response.value) <= 5) {
         uvSpan.css("background-color", "yellow")
+        uvSpan.css("color", "black")
       } else if (Math.floor(response.value) >= 6 && Math.floor(response.value) <= 7) {
         uvSpan.css("background-color", "orange")
       } else if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
-        uvSpan.css("background-color", "lightred")
+        uvSpan.css("background-color", "red")
+        uvSpan.css("color", "white")
       } else {
         uvSpan.css("background-color", "purple")
+        uvSpan.css("color", "white")
       }
       uvSpan.text(`${response.value}`)
       console.log(response)

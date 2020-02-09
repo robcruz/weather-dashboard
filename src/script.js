@@ -2,19 +2,55 @@
 const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
 let city = "London"
 
-function doIt(event){
-  event.preventDefault()
 
+
+let searchButton = $("#search-button")
+let citySpan = $("#city")
+let tempSpan = $("#temperature")
+let humiditySpan = $("#humidity")
+let windSpeedSpan = $("#wind-speed")
+let uvSpan = $("#uv")
+
+renderCurrentForecast("San Francisco")
+
+function renderCurrentForecast(city){
   $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_TOKEN}`,
+    url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${API_TOKEN}`,
     method: "GET"
   }).then(function (response) {
+    citySpan.text(`${response.name} (${moment().format("M/D/YYYY")})`)
+    tempSpan.text(`${response.main.temp.toFixed(1)} °F`)
+    humiditySpan.text(`${response.main.humidity}%`)
+    windSpeedSpan.text(`${response.wind.speed} MPH`)
+
+    $.ajax({
+      url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
+      method: "GET"
+    }).then(function (response) {
+      if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
+        uvSpan.css("background-color", "lightred")
+      } else {
+        uvSpan.css("background-color", "lightgreen")
+      }
+      uvSpan.text(`${response.value}`)
+      console.log(response)
+    })
+
+    console.log(`Temperature: ${response.main.temp}`)
+    console.log(`Humidity: ${response.main.humidity}`)
+    console.log(`Wind Speed: ${response.wind.speed}`)
+    console.log(`UV: ${response}`)
     console.log(response)
   })
 }
 
+function renderEventCurrentForecast(event){
+  event.preventDefault()
+  renderCurrentForecast(city)
+}
 
-$("#search-button").on("click", doIt);
+
+searchButton.on("click", renderEventCurrentForecast);
 
 /* 
 Put all variables that will be usedthroughout the js file Here.

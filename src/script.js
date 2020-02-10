@@ -127,12 +127,12 @@ function renderEventFutureForecast(city) {
       if (index===0){
         debugger
         renderFutureForecast(weatherItem)
-        somethingDate = getDateCreated(weatherItem.dt)
+        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
         debugger
       } else if (somethingDate !== getDateCreated(weatherItem.dt)) {
         debugger
         renderFutureForecast(weatherItem)
-        somethingDate = getDateCreated(weatherItem.dt)
+        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
         debugger
       }
 

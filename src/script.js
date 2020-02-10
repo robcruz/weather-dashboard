@@ -1,6 +1,6 @@
 //Global Variables
 const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
-let city = "London"
+let city = "Los Angeles"
 
 let searchInput = $("#search")
 let searchButton = $("#search-button")
@@ -10,7 +10,7 @@ let humiditySpan = $("#humidity")
 let windSpeedSpan = $("#wind-speed")
 let uvSpan = $("#uv")
 
-renderCurrentForecast("San Francisco")
+renderCurrentForecast("Los Angeles")
 
 function renderCurrentForecast(city){
   $.ajax({
@@ -43,14 +43,102 @@ function renderCurrentForecast(city){
         uvSpan.css("color", "white")
       }
       uvSpan.text(`${response.value}`)
-      console.log(response)
+    })
+  })
+}
+
+function getDateCreated(unix_date) {
+  new Date(1000 * $.parseJSON(`{"date_created":"${unix_date}"}`).date_created).getDate()
+}
+
+function renderFutureForecast(weatherItem) {
+  console.log(weatherItem)
+}
+
+function renderEventFutureForecast(city) {
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
+    method: "GET"
+  }).then(function (response) {
+
+    let today = new Date(Date.now()).getDate()
+    let weatherObjToday = null
+    let weatherObjTodayPlus1 = null
+    let weatherObjTodayPlus2= null
+    let weatherObjTodayPlus3 = null
+    let weatherObjTodayPlus4 = null
+    let weatherObjTodayPlus5 = null
+
+    let somethingDate = null
+
+    console.log(response.list)
+
+    response.list.forEach((weatherItem, index) => {
+
+      let myDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created)
+      console.log(myDate.toLocaleString())
+
+      let forecastDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
+
+      switch(forecastDate) {
+        case today:
+          if (!weatherObjToday) {
+            weatherObjToday = weatherItem
+
+          }
+
+          break;
+        case today + 1:
+          if (!weatherObjTodayPlus1) {
+            weatherObjTodayPlus1 = weatherItem
+
+          }
+
+          break;
+        case today + 2:
+          if (!weatherObjTodayPlus2) {
+            weatherObjTodayPlus2 = weatherItem
+
+          }
+
+          break;
+        case today + 3:
+          if (!weatherObjTodayPlus3) {
+            weatherObjTodayPlus3 = weatherItem
+
+          }
+          break;
+        case today + 4:
+          if (!weatherObjTodayPlus4) {
+            weatherObjTodayPlus4 = weatherItem
+
+          }
+          break;
+        case today + 5:
+          if (!weatherObjTodayPlus5) {
+            weatherObjTodayPlus5 = weatherItem
+
+          }
+          break;
+      }
+
+
+      debugger
+      if (index===0){
+        debugger
+        renderFutureForecast(weatherItem)
+        somethingDate = getDateCreated(weatherItem.dt)
+        debugger
+      } else if (somethingDate !== getDateCreated(weatherItem.dt)) {
+        debugger
+        renderFutureForecast(weatherItem)
+        somethingDate = getDateCreated(weatherItem.dt)
+        debugger
+      }
+
     })
 
-    console.log(`Temperature: ${response.main.temp}`)
-    console.log(`Humidity: ${response.main.humidity}`)
-    console.log(`Wind Speed: ${response.wind.speed}`)
-    console.log(`UV: ${response}`)
-    console.log(response)
+    debugger
   })
 }
 
@@ -59,6 +147,7 @@ function renderEventCurrentForecast(event){
   let city = searchInput.val()
   if (city) {
     renderCurrentForecast(city)
+    renderEventFutureForecast(city)
   }
 }
 

@@ -67,15 +67,15 @@ function get5DayForecast(city) {
 
     response.list.forEach((weatherItem, index) => {
       if (index===0){
-        debugger
+
         renderFutureForecast(weatherItem)
         somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
-        debugger
+
       } else if (somethingDate !== getDateCreated(weatherItem.dt)) {
-        debugger
+
         renderFutureForecast(weatherItem)
         somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
-        debugger
+
       }
     })
   })
@@ -152,7 +152,7 @@ function renderEventFutureForecast(city) {
 
     })
 
-    debugger
+
   })
 }
 

@@ -46,7 +46,7 @@ function renderCurrentForecast(city){
         uvElem.css("color", "white")
       }
 
-      uvElem.text(`Rob ${response.value}`)
+      uvElem.text(response.value)
     })
 
   })

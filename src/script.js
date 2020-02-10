@@ -8,9 +8,11 @@ let citySpan = $("#city")
 let tempSpan = $("#temperature")
 let humiditySpan = $("#humidity")
 let windSpeedSpan = $("#wind-speed")
-let uvSpan = $("#uv")
+let uvLabel = $("#uv")
 
 renderCurrentForecast("Los Angeles")
+
+searchButton.on("click", renderEventCurrentForecast)
 
 function renderCurrentForecast(city){
   $.ajax({
@@ -22,27 +24,30 @@ function renderCurrentForecast(city){
     humiditySpan.text(`${response.main.humidity}%`)
     windSpeedSpan.text(`${response.wind.speed} MPH`)
 
+
     $.ajax({
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
       method: "GET"
     }).then(function (response) {
+      debugger
       if (Math.floor(response.value) >= 1 && Math.floor(response.value) <= 2) {
-        uvSpan.css("background-color", "green")
-        uvSpan.css("color", "white")
+        uvLabel.css("background-color", "green")
+        uvLabel.css("color", "white")
       } else if (Math.floor(response.value) >= 3 && Math.floor(response.value) <= 5) {
-        uvSpan.css("background-color", "yellow")
-        uvSpan.css("color", "black")
+        uvLabel.css("background-color", "yellow")
+        uvLabel.css("color", "black")
       } else if (Math.floor(response.value) >= 6 && Math.floor(response.value) <= 7) {
-        uvSpan.css("background-color", "orange")
-        uvSpan.css("color", "black")
+        uvLabel.css("background-color", "orange")
+        uvLabel.css("color", "black")
       } else if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
-        uvSpan.css("background-color", "red")
-        uvSpan.css("color", "white")
+        uvLabel.css("background-color", "red")
+        uvLabel.css("color", "white")
       } else {
-        uvSpan.css("background-color", "purple")
-        uvSpan.css("color", "white")
+        uvLabel.css("background-color", "purple")
+        uvLabel.css("color", "white")
       }
-      uvSpan.text(`${response.value}`)
+      debugger
+      uvLabel.text(`${response.value}`)
     })
   })
 }
@@ -53,6 +58,28 @@ function getDateCreated(unix_date) {
 
 function renderFutureForecast(weatherItem) {
   console.log(weatherItem)
+}
+
+function get5DayForecast(city) {
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
+    method: "GET"
+  }).then(function (response) {
+
+    response.list.forEach((weatherItem, index) => {
+      if (index===0){
+        debugger
+        renderFutureForecast(weatherItem)
+        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
+        debugger
+      } else if (somethingDate !== getDateCreated(weatherItem.dt)) {
+        debugger
+        renderFutureForecast(weatherItem)
+        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
+        debugger
+      }
+    })
+  })
 }
 
 function renderEventFutureForecast(city) {
@@ -123,18 +150,6 @@ function renderEventFutureForecast(city) {
       }
 
 
-      debugger
-      if (index===0){
-        debugger
-        renderFutureForecast(weatherItem)
-        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
-        debugger
-      } else if (somethingDate !== getDateCreated(weatherItem.dt)) {
-        debugger
-        renderFutureForecast(weatherItem)
-        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
-        debugger
-      }
 
     })
 
@@ -152,7 +167,6 @@ function renderEventCurrentForecast(event){
 }
 
 
-searchButton.on("click", renderEventCurrentForecast);
 
 /* 
 Put all variables that will be usedthroughout the js file Here.

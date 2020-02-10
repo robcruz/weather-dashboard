@@ -28,7 +28,7 @@ function renderCurrentForecast(city){
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
       method: "GET"
     }).then(function (response) {
-      debugger
+
       if (Math.floor(response.value) >= 1 && Math.floor(response.value) <= 2) {
         uvLabel.css("background-color", "green")
         uvLabel.css("color", "white")
@@ -45,7 +45,7 @@ function renderCurrentForecast(city){
         uvLabel.css("background-color", "purple")
         uvLabel.css("color", "white")
       }
-      debugger
+
       uvLabel.text(`${response.value}`)
     })
   })

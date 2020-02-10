@@ -20,10 +20,9 @@ function renderCurrentForecast(city){
     method: "GET"
   }).then(function (response) {
     citySpan.text(`${response.name} (${moment().format("M/D/YYYY")})`)
-    tempSpan.text(`${response.main.temp.toFixed(1)} °F`)
-    humiditySpan.text(`${response.main.humidity}%`)
-    windSpeedSpan.text(`${response.wind.speed} MPH`)
-
+    tempSpan.text(response.main.temp.toFixed(1))
+    humiditySpan.text(response.main.humidity)
+    windSpeedSpan.text(response.wind.speed)
 
     $.ajax({
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,

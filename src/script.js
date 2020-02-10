@@ -2,27 +2,27 @@
 const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
 let city = "Los Angeles"
 
-let searchInput = $("#search")
-let searchButton = $("#search-button")
-let citySpan = $("#city")
-let tempSpan = $("#temperature")
-let humiditySpan = $("#humidity")
-let windSpeedSpan = $("#wind-speed")
-let uvLabel = $("#uv")
+let searchInputElem = $("#search")
+let searchElem = $("#search-button")
+let cityElem = $("#city")
+let tempElem = $("#temperature")
+let humidityElem = $("#humidity")
+let windSpeedElem = $("#wind-speed")
+let uvElem = $("#uv")
 
 renderCurrentForecast("Los Angeles")
 
-searchButton.on("click", renderEventCurrentForecast)
+searchElem.on("click", renderEventCurrentForecast)
 
 function renderCurrentForecast(city){
   $.ajax({
     url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${API_TOKEN}`,
     method: "GET"
   }).then(function (response) {
-    citySpan.text(`${response.name} (${moment().format("M/D/YYYY")})`)
-    tempSpan.text(response.main.temp.toFixed(1))
-    humiditySpan.text(response.main.humidity)
-    windSpeedSpan.text(response.wind.speed)
+    cityElem.text(`${response.name} (${moment().format("M/D/YYYY")})`)
+    tempElem.text(response.main.temp.toFixed(1))
+    humidityElem.text(response.main.humidity)
+    windSpeedElem.text(response.wind.speed)
 
     $.ajax({
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
@@ -30,23 +30,23 @@ function renderCurrentForecast(city){
     }).then(function (response) {
 
       if (Math.floor(response.value) >= 1 && Math.floor(response.value) <= 2) {
-        uvLabel.css("background-color", "green")
-        uvLabel.css("color", "white")
+        uvElem.css("background-color", "green")
+        uvElem.css("color", "white")
       } else if (Math.floor(response.value) >= 3 && Math.floor(response.value) <= 5) {
-        uvLabel.css("background-color", "yellow")
-        uvLabel.css("color", "black")
+        uvElem.css("background-color", "yellow")
+        uvElem.css("color", "black")
       } else if (Math.floor(response.value) >= 6 && Math.floor(response.value) <= 7) {
-        uvLabel.css("background-color", "orange")
-        uvLabel.css("color", "black")
+        uvElem.css("background-color", "orange")
+        uvElem.css("color", "black")
       } else if (Math.floor(response.value) >= 8 && Math.floor(response.value) <= 10) {
-        uvLabel.css("background-color", "red")
-        uvLabel.css("color", "white")
+        uvElem.css("background-color", "red")
+        uvElem.css("color", "white")
       } else {
-        uvLabel.css("background-color", "purple")
-        uvLabel.css("color", "white")
+        uvElem.css("background-color", "purple")
+        uvElem.css("color", "white")
       }
 
-      uvLabel.text(`${response.value}`)
+      uvElem.text(`${response.value}`)
     })
   })
 }
@@ -158,7 +158,7 @@ function renderEventFutureForecast(city) {
 
 function renderEventCurrentForecast(event){
   event.preventDefault()
-  let city = searchInput.val()
+  let city = searchInputElem.val()
   if (city) {
     renderCurrentForecast(city)
     renderEventFutureForecast(city)

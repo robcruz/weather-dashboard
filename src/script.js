@@ -28,7 +28,7 @@ function renderCurrentForecast(city){
     console.log(`Lat: ${response.coord.lat}`)
     console.log(`Long: ${response.coord.lon}`)
     $.ajax({
-      url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
+      url: `https://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
       method: "GET"
     }).then(function (response) {
       if (Math.floor(response.value) >= 1 && Math.floor(response.value) <= 2) {

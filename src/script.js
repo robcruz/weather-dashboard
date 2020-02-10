@@ -23,7 +23,7 @@ function renderCurrentForecast(city){
     tempElem.text(response.main.temp.toFixed(1))
     humidityElem.text(response.main.humidity)
     windSpeedElem.text(response.wind.speed)
-    uvElem.text('rob')
+    // uvElem.text('rob')
 
     $.ajax({
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
@@ -47,7 +47,7 @@ function renderCurrentForecast(city){
         uvElem.css("color", "white")
       }
 
-      //uvElem.text(`Rob ${response.value}`)
+      uvElem.text(`Rob ${response.value}`)
     })
   })
 }

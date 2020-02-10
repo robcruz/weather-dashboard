@@ -19,7 +19,7 @@ function renderCurrentForecast(city){
     url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${API_TOKEN}`,
     method: "GET"
   }).then(function (response) {
-    cityElem.text(`${response.name} (${moment().format("M/D/YYYY")})`)
+    cityElem.html(`<h2>${response.name} (${moment().format("M/D/YYYY")})</h2>`)
     tempElem.text(response.main.temp.toFixed(1))
     humidityElem.text(response.main.humidity)
     windSpeedElem.text(response.wind.speed)

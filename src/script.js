@@ -25,6 +25,8 @@ function renderCurrentForecast(city){
     windSpeedElem.text(response.wind.speed)
     // uvElem.text('rob')
 
+    console.log(`Lat: ${response.coord.lat}`)
+    console.log(`Long: ${response.coord.lon}`)
     $.ajax({
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_TOKEN}&lat=${response.coord.lat}&lon=${response.coord.lon}`,
       method: "GET"
@@ -46,6 +48,7 @@ function renderCurrentForecast(city){
         uvElem.css("color", "white")
       }
 
+      console.log(`UV: ${response.value}`)
       uvElem.text(response.value)
     })
 

@@ -1,6 +1,5 @@
 //Global Variables
 const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
-let city = "Los Angeles"
 
 let searchInputElem = $("#search")
 let searchElem = $("#search-button")
@@ -10,7 +9,9 @@ let humidityElem = $("#humidity")
 let windSpeedElem = $("#wind-speed")
 let uvElem = $("#uv")
 
-renderCurrentForecast("Los Angeles")
+let city = "Los Angeles"
+renderCurrentForecast(city)
+renderFutureForecast(city)
 
 searchElem.on("click", renderForecast)
 

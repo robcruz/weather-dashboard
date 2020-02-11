@@ -55,34 +55,6 @@ function renderCurrentForecast(city){
   })
 }
 
-// function getFutureForecastArr(city, days = 5) {
-//   let arr = []
-//   let prevDate = null
-//
-//   $.ajax({
-//     url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
-//     method: "GET"
-//   }).then(function (response) {
-//     for (let i = 0; arr.length < days; i++) {
-//       if (i === 0) {
-//         arr.push(response.list[i])
-//         prevDate = new Date(response.list[i].dt_txt).getDate()
-//       } else if (prevDate !== new Date(response.list[i].dt_txt).getDate()) {
-//         arr.push(response.list[i])
-//         prevDate = new Date(response.list[i].dt_txt).getDate()
-//       }
-//     }
-//
-//
-//     return arr
-//   })
-// }
-
-// day1Date
-// day1image
-// day1temp
-// day1humidity
-
 function renderFutureForecast(city) {
   let arr = []
   let prevDate = null
@@ -92,8 +64,6 @@ function renderFutureForecast(city) {
     url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
     method: "GET"
   }).then(function (response) {
-
-
 
     for (let i = 0; arr.length < 5; i++) {
       if (response.list[i]) {
@@ -108,6 +78,7 @@ function renderFutureForecast(city) {
       }
     }
     console.log(arr)
+
     for (let i=0; i < arr.length; i++) {
       let dateElem = $(`#day${i+1}Date`)
       let imageElem = $(`#day${i+1}Image`)
@@ -118,8 +89,8 @@ function renderFutureForecast(city) {
       humidityElem.text("")
       if (arr) {
         let dateStr = arr[i].dt_txt.split(" ")[0]
-        let dateArr = dateStr.split("-")
-        dateElem.text(`${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`)
+        let dateArr = dateStr.split("-") //`${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`
+        dateElem.text(dateArr.join("/"))
 
         // dateElem.text(new Date().getDate())
         tempElem.text(arr[i].main.temp.toFixed(1))

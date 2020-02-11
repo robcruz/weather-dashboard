@@ -1,4 +1,3 @@
-//Global Variables
 const API_TOKEN = "5c78ecc5505062a812390325cef1bdfc"
 
 let searchInputElem = $("#search")
@@ -64,38 +63,53 @@ function getFutureForecastArr(city, days = 5) {
     url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
     method: "GET"
   }).then(function (response) {
+    for (let i = 0; arr.length < days; i++) {
+      if (i === 0) {
+        arr.push(response.list[i])
+        prevDate = new Date(response.list[i].dt_txt).getDate()
+      } else if (prevDate !== new Date(response.list[i].dt_txt).getDate()) {
+        arr.push(response.list[i])
+        prevDate = new Date(response.list[i].dt_txt).getDate()
+      }
+    }
+
     debugger
-    response.list.forEach((forecast, index) => {
-      debugger
-      if (index===0){
-        arr.push(forecast)
-        prevDate = new Date(forecast.dt_txt).getDate()
-
-      } else if (prevDate !== new Date(forecast.dt_txt).getDate()) {
-        arr.push(forecast)
-        prevDate = new Date(forecast.dt_txt).getDate()
-      }
-
-      if (arr.length === days) {
-        return arr
-      }
-    })
-
     return arr
   })
 }
 
 // day1Date
-// day2Date
-// day3Date
-// day4Date
-// day5Date
+// day1image
+// day1temp
+// day1humidity
+
 function renderFutureForecast(city) {
   let forecastArr = getFutureForecastArr(city)
+  let index = 1;
 
-  forecastArr.forEach((forecast, index) => {
+  if (forecastArr) {
+    index = forecastArr.length
+  }
 
-  })
+  debugger
+  for (let i=0; i < index; i++) {
+    let dateElem = $(`#day${i+1}Date`)
+    let imageElem = $(`#day${i+1}Image`)
+    let tempElem = $(`#day${i+1}Temp`)
+    let humidityElem = $(`#day${i+1}Humidity`)
+
+    if (forecastArr) {
+      tempElem.text(forecastArr[i].main.temp.toFixed(1))
+      humidityElem.text(forecastArr[i].main.humidity)
+      debugger
+    } else {
+      tempElem.text('openWeather API is down')
+      humidityElem.text('openWeather API is down')
+      debugger
+    }
+  }
+
+
 
 
 }
@@ -106,40 +120,6 @@ function renderForecast(event){
   if (city) {
     renderCurrentForecast(city)
     renderFutureForecast(city)
-
   }
 }
 
-
-
-/* 
-Put all variables that will be usedthroughout the js file Here.
-If Variables are used only in one function, declare them within that function's scope.
-*/
-
-//DOM Elements and Jquery Wrappers
-/*
-If a DOM Element or Jquery Wrapper is important to the project, declare it as a variable here.
-*/
-
-//Useful Functions
-/*
-This is where we will define functions that we may be calling often,
-or that would be useful to have defined as functions instead of standard code.
-*/
-
-//Event Functions
-/*
-This is where we will define functions that are called by event handlers,
-Such as click methods for buttons
-*/
-
-//Event Assignment
-/*
-This is where we will assign the events of various elements to their functions.
-*/
-
-//Code to run on Page load
-/*
-This is where we will put any code that needs to be run after the page has loaded.
-*/

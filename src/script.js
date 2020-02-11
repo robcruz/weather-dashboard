@@ -12,7 +12,7 @@ let uvElem = $("#uv")
 
 renderCurrentForecast("Los Angeles")
 
-searchElem.on("click", renderEventCurrentForecast)
+searchElem.on("click", renderForecast)
 
 function renderCurrentForecast(city){
   $.ajax({
@@ -55,117 +55,47 @@ function renderCurrentForecast(city){
   })
 }
 
-function getDateCreated(unix_date) {
-  new Date(1000 * $.parseJSON(`{"date_created":"${unix_date}"}`).date_created).getDate()
-}
+function getFutureForecastArr(city, days = 5) {
+  let arr = []
+  let prevDate = null
 
-function renderFutureForecast(weatherItem) {
-  console.log(weatherItem)
-}
-
-function get5DayForecast(city) {
   $.ajax({
     url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
     method: "GET"
   }).then(function (response) {
-
+    debugger
     response.list.forEach((weatherItem, index) => {
+      debugger
       if (index===0){
+        arr.push(weatherItem)
+        prevDate = new Date(weatherItem.dt_txt).getDate()
 
-        renderFutureForecast(weatherItem)
-        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
+      } else if (prevDate !== new Date(weatherItem.dt_txt).getDate()) {
+        arr.push(weatherItem)
+        prevDate = new Date(weatherItem.dt_txt).getDate()
+      }
 
-      } else if (somethingDate !== getDateCreated(weatherItem.dt)) {
-
-        renderFutureForecast(weatherItem)
-        somethingDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
-
+      if (arr.length === days) {
+        return arr
       }
     })
+
+    return arr
   })
 }
 
-function renderEventFutureForecast(city) {
-  $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
-    method: "GET"
-  }).then(function (response) {
+function renderFutureForecast(city) {
+  let forecastArr = getFutureForecastArr(city)
 
-    let today = new Date(Date.now()).getDate()
-    let weatherObjToday = null
-    let weatherObjTodayPlus1 = null
-    let weatherObjTodayPlus2= null
-    let weatherObjTodayPlus3 = null
-    let weatherObjTodayPlus4 = null
-    let weatherObjTodayPlus5 = null
-
-    let somethingDate = null
-
-    console.log(response.list)
-
-    response.list.forEach((weatherItem, index) => {
-
-      let myDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created)
-      console.log(myDate.toLocaleString())
-
-      let forecastDate = new Date(1000 * $.parseJSON(`{"date_created":"${weatherItem.dt}"}`).date_created).getDate()
-
-      switch(forecastDate) {
-        case today:
-          if (!weatherObjToday) {
-            weatherObjToday = weatherItem
-
-          }
-
-          break;
-        case today + 1:
-          if (!weatherObjTodayPlus1) {
-            weatherObjTodayPlus1 = weatherItem
-
-          }
-
-          break;
-        case today + 2:
-          if (!weatherObjTodayPlus2) {
-            weatherObjTodayPlus2 = weatherItem
-
-          }
-
-          break;
-        case today + 3:
-          if (!weatherObjTodayPlus3) {
-            weatherObjTodayPlus3 = weatherItem
-
-          }
-          break;
-        case today + 4:
-          if (!weatherObjTodayPlus4) {
-            weatherObjTodayPlus4 = weatherItem
-
-          }
-          break;
-        case today + 5:
-          if (!weatherObjTodayPlus5) {
-            weatherObjTodayPlus5 = weatherItem
-
-          }
-          break;
-      }
-
-
-
-    })
-
-
-  })
 }
 
-function renderEventCurrentForecast(event){
+function renderForecast(event){
   event.preventDefault()
   let city = searchInputElem.val()
   if (city) {
     renderCurrentForecast(city)
-    renderEventFutureForecast(city)
+    renderFutureForecast(city)
+
   }
 }
 

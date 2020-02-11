@@ -55,28 +55,28 @@ function renderCurrentForecast(city){
   })
 }
 
-function getFutureForecastArr(city, days = 5) {
-  let arr = []
-  let prevDate = null
-
-  $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
-    method: "GET"
-  }).then(function (response) {
-    for (let i = 0; arr.length < days; i++) {
-      if (i === 0) {
-        arr.push(response.list[i])
-        prevDate = new Date(response.list[i].dt_txt).getDate()
-      } else if (prevDate !== new Date(response.list[i].dt_txt).getDate()) {
-        arr.push(response.list[i])
-        prevDate = new Date(response.list[i].dt_txt).getDate()
-      }
-    }
-
-    debugger
-    return arr
-  })
-}
+// function getFutureForecastArr(city, days = 5) {
+//   let arr = []
+//   let prevDate = null
+//
+//   $.ajax({
+//     url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
+//     method: "GET"
+//   }).then(function (response) {
+//     for (let i = 0; arr.length < days; i++) {
+//       if (i === 0) {
+//         arr.push(response.list[i])
+//         prevDate = new Date(response.list[i].dt_txt).getDate()
+//       } else if (prevDate !== new Date(response.list[i].dt_txt).getDate()) {
+//         arr.push(response.list[i])
+//         prevDate = new Date(response.list[i].dt_txt).getDate()
+//       }
+//     }
+//
+//
+//     return arr
+//   })
+// }
 
 // day1Date
 // day1image
@@ -84,30 +84,58 @@ function getFutureForecastArr(city, days = 5) {
 // day1humidity
 
 function renderFutureForecast(city) {
-  let forecastArr = getFutureForecastArr(city)
-  let index = 1;
+  let arr = []
+  let prevDate = null
 
-  if (forecastArr) {
-    index = forecastArr.length
-  }
 
-  debugger
-  for (let i=0; i < index; i++) {
-    let dateElem = $(`#day${i+1}Date`)
-    let imageElem = $(`#day${i+1}Image`)
-    let tempElem = $(`#day${i+1}Temp`)
-    let humidityElem = $(`#day${i+1}Humidity`)
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${API_TOKEN}`,
+    method: "GET"
+  }).then(function (response) {
 
-    if (forecastArr) {
-      tempElem.text(forecastArr[i].main.temp.toFixed(1))
-      humidityElem.text(forecastArr[i].main.humidity)
-      debugger
-    } else {
-      tempElem.text('openWeather API is down')
-      humidityElem.text('openWeather API is down')
-      debugger
+
+
+    for (let i = 0; arr.length < 5; i++) {
+      if (response.list[i]) {
+        console.log(response.list[i].dt)
+        if (i === 0) {
+          prevDate = new Date(response.list[i].dt_txt).getDate()
+        }
+        if (prevDate !== new Date(response.list[i].dt_txt).getDate()) {
+          arr.push(response.list[i])
+          prevDate = new Date(response.list[i].dt_txt).getDate()
+        }
+      }
     }
-  }
+    console.log(arr)
+    for (let i=0; i < arr.length; i++) {
+      let dateElem = $(`#day${i+1}Date`)
+      let imageElem = $(`#day${i+1}Image`)
+      let tempElem = $(`#day${i+1}Temp`)
+      let humidityElem = $(`#day${i+1}Humidity`)
+
+      tempElem.text("")
+      humidityElem.text("")
+      if (arr) {
+        dateElem.text(new Date(arr[i].dt_txt).getDate())
+        tempElem.text(arr[i].main.temp.toFixed(1))
+        humidityElem.text(arr[i].main.humidity)
+      } else {
+        dateElem.text('openWeather API down')
+        tempElem.text('No data')
+        humidityElem.text('No data')
+      }
+    }
+  })
+
+  // debugger
+  // let index = 1;
+  // if (arr.length > 0) {
+  //   index = forecastArr.length
+  // }
+
+
+
 
 
 

@@ -117,7 +117,11 @@ function renderFutureForecast(city) {
       tempElem.text("")
       humidityElem.text("")
       if (arr) {
-        dateElem.text(new Date(arr[i].dt_txt).getDate())
+        let dateStr = arr[i].dt_txt.split(" ")[0]
+        let dateArr = dateStr.split("-")
+        dateElem.text(`${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`)
+
+        // dateElem.text(new Date().getDate())
         tempElem.text(arr[i].main.temp.toFixed(1))
         humidityElem.text(arr[i].main.humidity)
       } else {

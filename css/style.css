@@ -5,6 +5,12 @@
     text-align: center;
 }
 
+.future-forecast-card {
+    width: 10rem;
+    background-color: blue;
+    color: white
+}
+
 * {
     box-sizing: border-box;
 }

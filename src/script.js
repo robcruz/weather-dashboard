@@ -65,15 +65,15 @@ function getFutureForecastArr(city, days = 5) {
     method: "GET"
   }).then(function (response) {
     debugger
-    response.list.forEach((weatherItem, index) => {
+    response.list.forEach((forecast, index) => {
       debugger
       if (index===0){
-        arr.push(weatherItem)
-        prevDate = new Date(weatherItem.dt_txt).getDate()
+        arr.push(forecast)
+        prevDate = new Date(forecast.dt_txt).getDate()
 
-      } else if (prevDate !== new Date(weatherItem.dt_txt).getDate()) {
-        arr.push(weatherItem)
-        prevDate = new Date(weatherItem.dt_txt).getDate()
+      } else if (prevDate !== new Date(forecast.dt_txt).getDate()) {
+        arr.push(forecast)
+        prevDate = new Date(forecast.dt_txt).getDate()
       }
 
       if (arr.length === days) {
@@ -85,8 +85,18 @@ function getFutureForecastArr(city, days = 5) {
   })
 }
 
+// day1Date
+// day2Date
+// day3Date
+// day4Date
+// day5Date
 function renderFutureForecast(city) {
   let forecastArr = getFutureForecastArr(city)
+
+  forecastArr.forEach((forecast, index) => {
+
+  })
+
 
 }
 
